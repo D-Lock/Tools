@@ -11,9 +11,16 @@ crypt_sys uses AES encryption to block cipher the binary file that is chosen and
   The password needs to be 16 characters, and preferred to have capitals, special characters under ASCII and  numbers for security purposes.
   
 ## Compression/Decompression
-press-sys is the tool used to compress and decompress encrypted files on the client side of the stack. This tool is only used client side and used to before encryption for reducing file size and data transfer
+press_sys is the tool used to compress and decompress encrypted files on the client side of the stack. This tool is only used client side and used to before encryption for reducing file size and data transfer
  
  Syntax:
   - [-c|-d] [inputfile] [-o] [outputfile]
   - c: compress the input file specified directly using the zip toolkit using standard compression rate of m5
   - d: decompresses the input file specified into the out output file.
+
+press_serv is the tool used to archive and unarchive files on the serverside for the ease of data transfering and to also split and join files at a later process.
+
+ Syntax:
+  - [-c|-d] [inputfile] [-o] [outputfile]
+  - c: archives the input file specified directly using the zip toolkit using standard compression rate of m5
+  - d: dearchives the input file specified into the out output file. 
