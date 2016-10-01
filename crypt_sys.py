@@ -32,46 +32,57 @@ script,option,in_filename,out_filename,password = sys.argv
 # modified code from StackOverFlow AES boilerplate encryption code
 #/questions/16761458/
 
+from os import urandom
 from hashlib import md5
+
 from Crypto.Cipher import AES
-from Crypto import Random
 
 def derive_key_and_iv(password, salt, key_length, iv_length):
-    d = d_i = ''
+    d = d_i = b''  # changed '' to b''
     while len(d) < key_length + iv_length:
-        d_i = md5(d_i + password + salt).digest()
+        # changed password to str.encode(password)
+        d_i = md5(d_i + str.encode(password) + salt).digest()
         d += d_i
     return d[:key_length], d[key_length:key_length+iv_length]
 
-def encrypt(in_file, out_file, password, key_length=32):
+def encrypt(in_file, out_file, password, salt_header='', key_length=32):
+    # added salt_header=''
     bs = AES.block_size
-    salt = Random.new().read(bs - len('Salted__'))
+    # replaced Crypt.Random with os.urandom
+    salt = urandom(bs - len(salt_header))
     key, iv = derive_key_and_iv(password, salt, key_length, bs)
     cipher = AES.new(key, AES.MODE_CBC, iv)
-    out_file.write('Salted__' + salt)
+    # changed 'Salted__' to str.encode(salt_header)
+    out_file.write(str.encode(salt_header) + salt)
     finished = False
     while not finished:
-        chunk = in_file.read(1024 * bs)
+        chunk = in_file.read(1024 * bs) 
         if len(chunk) == 0 or len(chunk) % bs != 0:
             padding_length = (bs - len(chunk) % bs) or bs
-            chunk += padding_length * chr(padding_length)
+            # changed right side to str.encode(...)
+            chunk += str.encode(
+                padding_length * chr(padding_length))
             finished = True
         out_file.write(cipher.encrypt(chunk))
 
-def decrypt(in_file, out_file, password, key_length=32):
+def decrypt(in_file, out_file, password, salt_header='', key_length=32):
+    # added salt_header=''
     bs = AES.block_size
-    salt = in_file.read(bs)[len('Salted__'):]
+    # changed 'Salted__' to salt_header
+    salt = in_file.read(bs)[len(salt_header):]
     key, iv = derive_key_and_iv(password, salt, key_length, bs)
     cipher = AES.new(key, AES.MODE_CBC, iv)
     next_chunk = ''
     finished = False
     while not finished:
-        chunk, next_chunk = next_chunk, cipher.decrypt(in_file.read(1024 * bs))
+        chunk, next_chunk = next_chunk, cipher.decrypt(
+            in_file.read(1024 * bs))
         if len(next_chunk) == 0:
-            padding_length = ord(chunk[-1])
+            padding_length = chunk[-1]  # removed ord(...) as unnecessary
             chunk = chunk[:-padding_length]
-            finished = True
-        out_file.write(chunk)
+            finished = True 
+            out_file.write(
+                bytes(x for x in chunk))  # changed chunk to bytes(...)
 
 if (option == '-e'):
 	with open(in_filename, 'rb') as in_file, open(out_filename, 'wb') as out_file:
