@@ -1,5 +1,5 @@
 #! /usr/bin/python3
-# Compression/Decompression file for pressing files prior to encryption
+# Splitting Algorithm for Server Side interaction
 
 import os
 import sys
@@ -38,11 +38,10 @@ elif(len(sys.argv) == 3):
 	while (fid <= num):
 		print (fid)
 		infile.seek((fid-1) * size)
-		f = open(strfile %fid, 'wb+')
-		f.write(infile.read(size))
+		out = open(strfile %fid, 'wb+')
+		out.write(infile.read(size))
 		fid += 1;
-	if (f.read() != ''):
-		f.write(infile.read(size))
+	out.write(infile.read(size))
 	print ('Completed splitting files')
 		
 else:
