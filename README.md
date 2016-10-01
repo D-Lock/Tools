@@ -29,6 +29,7 @@ press_serv is the tool used to archive and unarchive files on the serverside for
 merge_file and split_file used the same syntax. They split_file splits the input file based on the number of files you chose and breaks those files down to a binary level so they can be reconstructed as acccruately as possible
 
  Syntax:
-  - [-inputfile] [numberoffiles]
+  - [-inputfile] [numberoffiles] [-o] [outputfile]
   - To merge, specify the first file and then the number of files that are there
   - Files for merging should be the name.extension_number and thus reads from 1 to the numberoffiles
+  - Insert the file name for outputfile to where you want to save and the name of the file.
