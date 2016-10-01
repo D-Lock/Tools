@@ -1,5 +1,8 @@
 #! /usr/bin/python3
 # Encryption/Decryption file for crypting files prior to upload
+# This uses AES Encryption to crypt the files into binaries
+# MUST use a password atleast 16 characters long so the file is correctly
+# padded
 
 import os
 import sys
