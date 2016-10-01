@@ -2,6 +2,7 @@
 # Encryption/Decryption file for crypting files prior to upload
 
 import os
+import sys
 #Create a command line arguement option
 # OPTIONS:
 def printOptions():
@@ -17,3 +18,19 @@ def operationMismatch(num):
 	elif (num == 1):
 		print "ERROR: File could not be encrypted\n"
 
+#Get args
+if (len(sys.argv)!=4):
+	sys.exit("ERROR: Need 4 arguments in the correct format.")
+option,inputfile,outputfile,password = argv
+
+if (option == '-e'):
+	encrypt(inputfile,outputfile,password)
+	sys.exit(0)
+
+elif (option =='-d'):
+	decrypt(inputfile,outputfile,password)
+	sys.exit(0)
+else:
+	exit("ERROR: Need to insert correct options, -e|-d")
+
+#Encryption and Decryption fucntions
