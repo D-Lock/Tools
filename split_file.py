@@ -7,7 +7,7 @@ import sys
 def printOptions():
 	print ('OPTIONS')
 	print ('-help to print this menu')
-	print ('Argument format: [inputfilename] [numoutputfiles]')
+	print ('Argument format: [inputfilename] [numoutputfiles] [-o] [outputfilename]')
 
 def operationMismatch(num):
 	if (num == 0):
@@ -24,16 +24,20 @@ if(len(sys.argv) <= 2):
 	printOptions()
 	sys.exit(0)
 
-elif(len(sys.argv) == 3):
+elif((len(sys.argv) == 3) or (len(sys.argv) == 5)):
 	inName,num = sys.argv[1:3]
-	
+
 	fid = 1
 	size = os.path.getsize(inName)
 	num = int(num)
 	size = int(size / num)
 
 	infile = open(inName, 'rb')
-	strfile = inName + '_%d'
+	if (len(sys.argv) == 3):
+		strfile = inName + '_%d'
+	else:
+		outname = sys.argv[4]
+		strfile = outname + '_%d'
 	print ('Splitting file into {} parts'.format(num))
 	while (fid <= num):
 		print (fid)

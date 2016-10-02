@@ -7,7 +7,7 @@ import sys
 def printOptions():
 	print ('OPTIONS')
 	print ('-help to print this menu')
-	print ('Argument format: [firstPart] [numfiles]')
+	print ('Argument format: [firstPart] [numfiles] [-o] [outputfilename]')
 
 def operationMismatch(num):
 	if (num == 0):
@@ -24,13 +24,17 @@ if(len(sys.argv) <= 2):
 	printOptions()
 	sys.exit(0)
 
-elif(len(sys.argv) == 3):
+elif((len(sys.argv) == 3) or (len(sys.argv) == 5)):
 	inName,num = sys.argv[1:3]
 	
 	size = os.path.getsize(inName)
 	last = inName.rfind("_")
-	outName = inName[:last]
-	strfile = outName + '_%d'
+	if(len(sys.argv) == 3):
+		outName = inName[:last]
+		strfile = outName + '_%d'
+	else:
+		outName = sys.argv[4]
+		strfile = inName[:last] + '_%d'
 
 	out = open(outName, 'wb+')
 
