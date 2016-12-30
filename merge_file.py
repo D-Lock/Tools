@@ -27,7 +27,8 @@ if(len(sys.argv) <= 2):
 elif((len(sys.argv) == 3) or (len(sys.argv) == 5)):
 	inName,num = sys.argv[1:3]
 	
-	size = os.path.getsize(inName)
+	inPath = os.path.join(os.getcwd(), inName)
+	size = os.path.getsize(inPath)
 	last = inName.rfind("_")
 	if(len(sys.argv) == 3):
 		outName = inName[:last]
@@ -36,11 +37,12 @@ elif((len(sys.argv) == 3) or (len(sys.argv) == 5)):
 		outName = sys.argv[4]
 		strfile = inName[:last] + '_%d'
 
-	out = open(outName, 'wb+')
+	cwd = os.getcwd()
+	out = open(os.path.join(cwd, outName), 'wb+')
 
 	print ('Merging file from {} parts'.format(num))
 	for i in range(1,int(num)+1):
-		infile = open(strfile %i, 'rb')
+		infile = open(os.path.join(cwd, strfile %i), 'rb')
 		out.write(infile.read(size))
 	print ('Completed merging files')
 
